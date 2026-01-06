@@ -1,16 +1,22 @@
-## Hi there 👋
+# Hi, I'm Kishor Gavhane 👋
 
-<!--
-**Kishorgavhane/kishorgavhane** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+DevOps & Cloud Engineer with 7+ years of IT experience in infrastructure, cloud, and automation.
 
-Here are some ideas to get you started:
+## 🔧 Skills
+- Azure & Azure DevOps
+- AWS (Fundamentals)
+- Linux (Ubuntu)
+- CI/CD Pipelines
+- Docker & Kubernetes (Basics)
+- Terraform (Basics)
+- Networking & Firewalls
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 🚀 What I'm learning
+- Advanced CI/CD
+- Kubernetes
+- Terraform
+- AWS
+
+## 📫 Connect with me
+- Email: kishorgavhane.dev@gmail.com
+- LinkedIn: (www.linkedin.com/in/kishor-g-dev)
