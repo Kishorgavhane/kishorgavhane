@@ -3,7 +3,7 @@
 DevOps & Cloud Engineer with 7+ years of IT experience in infrastructure, cloud, and automation.
 
 ## 🔧 Skills
-- Azure & Azure DevOps
+- Azure & AWS DevOps
 - AWS (Fundamentals)
 - Linux (Ubuntu)
 - CI/CD Pipelines
