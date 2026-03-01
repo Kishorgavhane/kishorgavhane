@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kishor Gavhane — Cloud & DevOps Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #050a0f;
+      --bg2: #080f18;
+      --surface: #0d1a26;
+      --surface2: #111f2e;
+      --border: rgba(0,200,255,0.12);
+      --accent: #00c8ff;
+      --accent2: #00ff9d;
+      --accent3: #7b61ff;
+      --text: #e8f4ff;
+      --text2: #8aa8c0;
+      --text3: #4a6a80;
+      --glow: 0 0 30px rgba(0,200,255,0.25);
+      --glow2: 0 0 20px rgba(0,255,157,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s; mix-blend-mode: screen; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(0,200,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.15s ease; }
+    body:hover .cursor { opacity: 1; }
+
+    /* CANVAS BACKGROUND */
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.6; }
+
+    /* GRID OVERLAY */
+    .grid-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+      background-image: linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* WRAPPER */
+    .wrapper { position: relative; z-index: 2; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(5,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    nav.scrolled { padding: 0.8rem 4rem; background: rgba(5,10,15,0.95); }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+    }
+    .nav-logo span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text2);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+      background: var(--accent); transform: scaleX(0); transition: transform 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--bg); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--accent); transition: all 0.3s; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+    }
+    .hero-inner { max-width: 1100px; width: 100%; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      border: 1px solid rgba(0,255,157,0.2);
+      padding: 0.4rem 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.15em;
+      animation: fadeInDown 0.8s ease 0.2s both;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+    .hero-title .line1 { display: block; color: var(--text); }
+    .hero-title .line2 { display: block; color: transparent; -webkit-text-stroke: 1px rgba(0,200,255,0.4); }
+    .hero-title .line3 { display: block; color: var(--accent); }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text2);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+    .hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.8s both; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--accent2);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+    .btn-primary:hover::before { transform: translateX(0); }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      animation: fadeInUp 0.8s ease 1s both;
+    }
+    .stat { }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--text3); margin-top: 0.3rem; letter-spacing: 0.05em; }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      animation: fadeIn 1s ease 1.5s both;
+    }
+    .hero-scroll span { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 50px; background: linear-gradient(var(--accent), transparent); animation: scrollPulse 2s infinite; }
+
+    /* SECTION BASE */
+    section { padding: 7rem 4rem; }
+    .section-header { margin-bottom: 4rem; }
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .section-tag::before { content: '//'; color: var(--text3); }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    .section-title span { color: var(--accent); }
+    .max-w { max-width: 1200px; margin: 0 auto; }
+
+    /* ABOUT */
+    #about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: center; }
+    .about-visual {
+      position: relative;
+    }
+    .about-avatar-wrap {
+      position: relative;
+      width: 320px; height: 320px;
+    }
+    .avatar-hex {
+      width: 100%; height: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+    .avatar-icon { font-size: 5rem; color: var(--accent); opacity: 0.8; }
+    .avatar-ring {
+      position: absolute; inset: -20px;
+      border: 1px dashed rgba(0,200,255,0.2);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      animation: spin 30s linear infinite;
+    }
+    .about-badge-float {
+      position: absolute;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.8rem 1.2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+    }
+    .badge-az { top: -10px; right: -30px; }
+    .badge-exp { bottom: 20px; left: -40px; color: var(--accent); }
+    .about-text p { color: var(--text2); line-height: 1.8; margin-bottom: 1.2rem; font-size: 1.05rem; }
+    .about-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .highlight-item {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.9rem; color: var(--text2);
+    }
+    .highlight-item i { color: var(--accent2); font-size: 0.85rem; }
+
+    /* SKILLS */
+    #skills { background: var(--bg); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .skill-card:hover { border-color: rgba(0,200,255,0.3); transform: translateY(-4px); box-shadow: var(--glow); }
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-card-icon { font-size: 1.8rem; margin-bottom: 1.2rem; color: var(--accent); }
+    .skill-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.05em;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 0.3rem 0.7rem;
+      background: rgba(0,200,255,0.06);
+      border: 1px solid rgba(0,200,255,0.15);
+      color: var(--text2);
+      letter-spacing: 0.05em;
+    }
+
+    /* EXPERIENCE */
+    #experience { background: var(--bg2); }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(var(--accent), transparent);
+    }
+    .timeline-item { padding-left: 3rem; padding-bottom: 4rem; position: relative; }
+    .timeline-dot {
+      position: absolute; left: -7px; top: 4px;
+      width: 15px; height: 15px;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+    }
+    .timeline-dot::after {
+      content: ''; position: absolute; inset: 3px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+    .timeline-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+    }
+    .timeline-company {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-role {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      font-family: 'Space Mono', monospace;
+    }
+    .timeline-items { list-style: none; }
+    .timeline-items li {
+      padding: 0.5rem 0;
+      color: var(--text2);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      display: flex;
+      gap: 0.8rem;
+    }
+    .timeline-items li::before { content: '▸'; color: var(--accent2); flex-shrink: 0; margin-top: 2px; }
+
+    /* PROJECTS */
+    #projects { background: var(--bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,200,255,0.03), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .project-card:hover { border-color: rgba(0,200,255,0.3); transform: translateY(-4px); box-shadow: var(--glow); }
+    .project-card:hover::after { opacity: 1; }
+    .project-type {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+    .project-desc { color: var(--text2); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .project-stack span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(123,97,255,0.1);
+      border: 1px solid rgba(123,97,255,0.2);
+      color: #a090ff;
+    }
+    .project-links { display: flex; gap: 1rem; }
+    .project-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.3s;
+    }
+    .project-link:hover { color: var(--accent2); }
+
+    /* CERTIFICATIONS */
+    #certifications { background: var(--bg2); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      transition: all 0.4s;
+    }
+    .cert-card:hover { border-color: rgba(0,200,255,0.3); box-shadow: var(--glow); transform: translateY(-2px); }
+    .cert-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: rgba(0,200,255,0.08);
+      border: 1px solid rgba(0,200,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: var(--accent);
+    }
+    .cert-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .cert-issuer { font-size: 0.8rem; color: var(--text3); font-family: 'Space Mono', monospace; }
+    .cert-status {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.65rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0,255,157,0.08);
+      border: 1px solid rgba(0,255,157,0.2);
+      color: var(--accent2);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+    }
+
+    /* RESUME */
+    #resume { background: var(--bg); }
+    .resume-section { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .resume-upload-area {
+      border: 1px dashed rgba(0,200,255,0.3);
+      padding: 3rem 2rem;
+      text-align: center;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .resume-upload-area:hover { border-color: var(--accent); background: rgba(0,200,255,0.04); }
+    .resume-upload-area.drag-over { border-color: var(--accent2); background: rgba(0,255,157,0.05); }
+    .upload-icon { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; display: block; }
+    .upload-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+    .upload-sub { font-size: 0.85rem; color: var(--text2); }
+    #resume-file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    #resume-preview { margin-top: 1.5rem; display: none; }
+    #resume-preview iframe { width: 100%; height: 500px; border: 1px solid var(--border); }
+    .resume-download {
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .download-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      transition: all 0.3s;
+    }
+    .download-card:hover { border-color: rgba(0,200,255,0.3); }
+    .download-icon { font-size: 2rem; color: var(--accent); }
+    .download-info { flex: 1; }
+    .download-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); }
+    .download-meta { font-size: 0.8rem; color: var(--text3); margin-top: 0.2rem; font-family: 'Space Mono', monospace; }
+    #download-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    #download-btn:hover { background: var(--accent); color: var(--bg); }
+
+    /* CONTACT */
+    #contact { background: var(--bg2); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
+    .contact-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--text2); line-height: 1.7; margin-bottom: 2rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .contact-item:hover { border-color: rgba(0,200,255,0.3); transform: translateX(6px); }
+    .contact-item i { font-size: 1rem; color: var(--accent); width: 20px; }
+    .contact-item-text { font-size: 0.9rem; color: var(--text2); }
+    .contact-item-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text3); margin-top: 0.2rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.9rem 1.2rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: none;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { height: 130px; }
+    .form-submit {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      padding: 1rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.05em;
+    }
+    .form-submit:hover { background: var(--accent2); }
+    #form-success { display: none; padding: 1rem; background: rgba(0,255,157,0.08); border: 1px solid rgba(0,255,157,0.2); color: var(--accent2); font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--text2); }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      color: var(--text3);
+      font-size: 1rem;
+      transition: color 0.3s;
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text3); }
+
+    /* ANIMATIONS */
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+    @keyframes scrollPulse { 0%,100% { opacity: 1; height: 50px; } 50% { opacity: 0.3; height: 25px; } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* MOBILE NAV */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(5,10,15,0.98);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-size: 1.5rem; color: var(--accent); cursor: pointer; background: none; border: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 5rem 2rem; }
+      #hero { padding: 7rem 2rem 4rem; }
+      .about-grid, .resume-section, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-stats { gap: 1.5rem; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+    }
+    @media (max-width: 640px) {
+      .hero-title { font-size: 3rem; }
+      .hero-stats { flex-wrap: wrap; }
+      .skills-grid, .projects-grid, .certs-grid { grid-template-columns: 1fr; }
+      .about-avatar-wrap { width: 220px; height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="grid-overlay"></div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="mobile-close" onclick="closeMobileMenu()"><i class="fa fa-times"></i></button>
+    <a href="#about" onclick="closeMobileMenu()">About</a>
+    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+    <a href="#experience" onclick="closeMobileMenu()">Experience</a>
+    <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+    <a href="#certifications" onclick="closeMobileMenu()">Certifications</a>
+    <a href="#resume" onclick="closeMobileMenu()">Resume</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#hero">KG<span>.dev</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:kishorgavhane.dev@gmail.com">Hire Me</a>
+    <div class="hamburger" onclick="openMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-inner">
+        <div class="hero-badge"><div class="dot"></div>Available for New Opportunities</div>
+        <h1 class="hero-title">
+          <span class="line1">KISHOR</span>
+          <span class="line2">GAVHANE</span>
+          <span class="line3">DevOps Engineer</span>
+        </h1>
+        <p class="hero-sub">
+          Cloud & DevOps Engineer with 7+ years of experience architecting scalable infrastructure, automating CI/CD pipelines, and bridging the gap between development and operations on Microsoft Azure.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#contact"><span><i class="fa fa-paper-plane"></i> Get In Touch</span></a>
+          <a class="btn-secondary" href="#experience"><i class="fa fa-arrow-down"></i> View My Work</a>
+          <a class="btn-secondary" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          <a class="btn-secondary" href="https://www.linkedin.com/in/kishor-g-dev" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">7+</span><div class="stat-label">Years Experience</div></div>
+          <div class="stat"><span class="stat-num">200+</span><div class="stat-label">Users Supported</div></div>
+          <div class="stat"><span class="stat-num">AZ-104</span><div class="stat-label">Certified Azure Admin</div></div>
+          <div class="stat"><span class="stat-num">10+</span><div class="stat-label">Technologies</div></div>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Who I Am</div>
+          <h2 class="section-title">About <span>Me</span></h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-visual reveal">
+            <div class="about-avatar-wrap" style="animation: float 4s ease-in-out infinite;">
+              <div class="avatar-hex">
+                <i class="fas fa-cloud avatar-icon"></i>
+              </div>
+              <div class="avatar-ring"></div>
+              <div class="about-badge-float badge-az">⚡ AZ-104 Certified</div>
+              <div class="about-badge-float badge-exp">📍 Pune, India</div>
+            </div>
+          </div>
+          <div class="about-text reveal">
+            <p>I'm a <strong>Cloud & DevOps Engineer</strong> based in Pune, India with over 7 years of deep hands-on experience managing enterprise IT infrastructure, cloud environments, and operational workflows across diverse technology stacks.</p>
+            <p>My core expertise lies in <strong>Microsoft Azure administration</strong>, where I hold the AZ-104 certification. I specialize in provisioning and managing Azure Virtual Machines, configuring Azure Networking (VNet, NSG), administering Azure Active Directory (Entra ID), and building robust monitoring pipelines using Azure Monitor and Log Analytics.</p>
+            <p>Beyond cloud, I bring strong foundations in Linux administration, CI/CD automation, containerization with Docker and Kubernetes, network security (pfSense, Cisco), and infrastructure virtualization using VMware and Proxmox. I take pride in automating repetitive workflows using Shell and PowerShell scripting to drive operational efficiency.</p>
+            <div class="about-highlights">
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>Azure Virtual Machines & Networking</div>
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>CI/CD Pipeline Implementation</div>
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>Linux & Windows Server Admin</div>
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>Docker & Kubernetes Fundamentals</div>
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>pfSense Firewall & VPN Security</div>
+              <div class="highlight-item"><i class="fas fa-check-circle"></i>Infrastructure Automation & Scripting</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Expertise</div>
+          <h2 class="section-title">Technical <span>Skills</span></h2>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fab fa-microsoft"></i></div>
+            <div class="skill-card-title">Cloud & Azure</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Microsoft Azure</span>
+              <span class="skill-tag">Azure VMs</span>
+              <span class="skill-tag">Azure VNet / NSG</span>
+              <span class="skill-tag">Azure AD / Entra ID</span>
+              <span class="skill-tag">Azure DevOps</span>
+              <span class="skill-tag">Azure Monitor</span>
+              <span class="skill-tag">Log Analytics</span>
+              <span class="skill-tag">Backup & DR</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fab fa-aws"></i></div>
+            <div class="skill-card-title">AWS Fundamentals</div>
+            <div class="skill-tags">
+              <span class="skill-tag">EC2</span>
+              <span class="skill-tag">S3</span>
+              <span class="skill-tag">RDS</span>
+              <span class="skill-tag">VPC</span>
+              <span class="skill-tag">IAM</span>
+              <span class="skill-tag">Cloud Architecture</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fas fa-infinity"></i></div>
+            <div class="skill-card-title">DevOps & CI/CD</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Azure DevOps (AZ-400)</span>
+              <span class="skill-tag">CI/CD Pipelines</span>
+              <span class="skill-tag">Git & Source Control</span>
+              <span class="skill-tag">GitHub Actions</span>
+              <span class="skill-tag">Release Management</span>
+              <span class="skill-tag">Terraform (Basics)</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fab fa-docker"></i></div>
+            <div class="skill-card-title">Containers & Virtualization</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">Kubernetes (Pods, Deployments)</span>
+              <span class="skill-tag">VMware</span>
+              <span class="skill-tag">Proxmox</span>
+              <span class="skill-tag">Container Lifecycle</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="skill-card-title">Networking & Security</div>
+            <div class="skill-tags">
+              <span class="skill-tag">LAN / WAN</span>
+              <span class="skill-tag">VPN Configuration</span>
+              <span class="skill-tag">DNS & DHCP</span>
+              <span class="skill-tag">pfSense Firewall</span>
+              <span class="skill-tag">Cisco SG350X</span>
+              <span class="skill-tag">CCNA</span>
+              <span class="skill-tag">Web Filtering</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-card-icon"><i class="fas fa-terminal"></i></div>
+            <div class="skill-card-title">OS, Scripting & Automation</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Linux (Ubuntu)</span>
+              <span class="skill-tag">Windows Server 2016</span>
+              <span class="skill-tag">Shell Scripting</span>
+              <span class="skill-tag">PowerShell</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Active Directory</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Career</div>
+          <h2 class="section-title">Work <span>Experience</span></h2>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">APR 2023 — PRESENT</div>
+            <div class="timeline-company">Nakoda Machinery PVT. LTD.</div>
+            <div class="timeline-role">Cloud & Network Engineer</div>
+            <ul class="timeline-items">
+              <li>Manage and support production IT infrastructure for 200+ users across Windows 10/11, Linux (Ubuntu), and iOS, ensuring high availability and uptime.</li>
+              <li>Administer Microsoft Azure (AZ-104 aligned): provision and manage VMs, disk storage, networking (VNet, NSG), identity (Azure AD/Entra ID), and backup solutions.</li>
+              <li>Monitor cloud and on-premises resources using Azure Monitor, Log Analytics, and custom alert rules for proactive issue resolution.</li>
+              <li>Implement CI/CD pipelines using Azure DevOps (AZ-400), Git-based source control workflows, and release management in internal test environments.</li>
+              <li>Deploy and manage pfSense Next-Generation Firewall with VPN, firewall rules, port blocking, and web filtering policies.</li>
+              <li>Install and maintain virtualization platforms (Proxmox & VMware) hosting Windows Server 2016, Ubuntu Server, Zentyal Domain Server, and backup servers.</li>
+              <li>Automate repetitive tasks using Shell scripting and PowerShell, significantly reducing manual operational overhead.</li>
+              <li>Manage Google Workspace and Microsoft 365 including DNS records, email configuration, migrations, and troubleshooting.</li>
+              <li>Configure LAN/WAN networks using Cisco SG350X routers and D-Link switches to ensure secure, reliable connectivity.</li>
+              <li>Support hybrid cloud environments, integrating on-premises infrastructure with Azure via VPN and secure network design.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">OCT 2022 — MAR 2023</div>
+            <div class="timeline-company">Multiversity Group</div>
+            <div class="timeline-role">Desktop Support Engineer</div>
+            <ul class="timeline-items">
+              <li>Provided technical support for 100+ users on Windows and macOS systems, ensuring system stability and minimal downtime.</li>
+              <li>Utilized Atera RMM for remote monitoring, patch management, and automation tasks, building proactive system management capabilities.</li>
+              <li>Managed service desk workflows, user onboarding, and access control policies, strengthening IT operations fundamentals.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">AUG 2021 — SEP 2022</div>
+            <div class="timeline-company">Icom Industries (Client: H.E. Factory)</div>
+            <div class="timeline-role">Desktop Support Engineer</div>
+            <ul class="timeline-items">
+              <li>Provided day-to-day support for 200+ systems handling Windows installation, configuration, and hardware troubleshooting.</li>
+              <li>Maintained CCTV systems (DVR/NVR) and managed basic security monitoring as part of unified IT operations.</li>
+              <li>Resolved peripheral and printer issues, ensuring uninterrupted office productivity.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">MAY 2018 — AUG 2021</div>
+            <div class="timeline-company">Quess Corp PVT. LTD.</div>
+            <div class="timeline-role">Technical Support Engineer — Client: Samsung Electronics PVT. LTD.</div>
+            <ul class="timeline-items">
+              <li>Delivered front-line technical support for Samsung mobile devices, handling software updates, system diagnostics, and performance issues.</li>
+              <li>Ensured compliance with Samsung Knox enterprise security standards for device security and accurate technical support delivery.</li>
+              <li>Maintained high customer satisfaction through clear troubleshooting guidance and swift issue resolution.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Portfolio</div>
+          <h2 class="section-title">Featured <span>Projects</span></h2>
+        </div>
+        <div class="projects-grid">
+
+          <div class="project-card reveal">
+            <div class="project-type">// Cloud Infrastructure</div>
+            <div class="project-title">Azure Hybrid Cloud Integration</div>
+            <div class="project-desc">Designed and implemented a hybrid cloud environment connecting on-premises infrastructure with Microsoft Azure using VPN Gateway and ExpressRoute concepts, enabling secure workload migration and centralized identity management via Azure AD.</div>
+            <div class="project-stack">
+              <span>Azure VMs</span><span>VNet</span><span>NSG</span><span>Azure AD</span><span>VPN Gateway</span><span>Log Analytics</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-type">// DevOps Automation</div>
+            <div class="project-title">CI/CD Pipeline with Azure DevOps</div>
+            <div class="project-desc">Built end-to-end CI/CD pipelines using Azure DevOps for automated build, test, and release workflows. Integrated Git-based source control with branch protection policies, automated approvals, and multi-stage deployment strategies.</div>
+            <div class="project-stack">
+              <span>Azure DevOps</span><span>YAML Pipelines</span><span>Git</span><span>Release Gates</span><span>Artifacts</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-type">// Network Security</div>
+            <div class="project-title">pfSense Enterprise Firewall Deployment</div>
+            <div class="project-desc">Deployed and configured pfSense Next-Generation Firewall for a 200+ user production environment. Implemented VPN tunnels, firewall rule sets, port blocking, VLAN segmentation, and web content filtering per organizational security policies.</div>
+            <div class="project-stack">
+              <span>pfSense</span><span>VPN</span><span>VLAN</span><span>Web Filtering</span><span>Cisco SG350X</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-type">// Virtualization</div>
+            <div class="project-title">Proxmox & VMware Lab Infrastructure</div>
+            <div class="project-desc">Deployed a multi-tier virtualization infrastructure using Proxmox and VMware hosting Windows Server 2016, Ubuntu Server, Zentyal Domain Controller, and dedicated backup servers, enabling isolated testing and production environments.</div>
+            <div class="project-stack">
+              <span>Proxmox</span><span>VMware</span><span>Windows Server 2016</span><span>Ubuntu Server</span><span>Zentyal</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-type">// Containerization</div>
+            <div class="project-title">Docker Containerization & Kubernetes Setup</div>
+            <div class="project-desc">Containerized application workloads using Docker with custom image creation and multi-container orchestration. Explored Kubernetes fundamentals including pod scheduling, deployments, services, and namespace management for scalable application delivery.</div>
+            <div class="project-stack">
+              <span>Docker</span><span>Kubernetes</span><span>Pods</span><span>Deployments</span><span>Docker Hub</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-type">// This Portfolio</div>
+            <div class="project-title">Portfolio Website with GitHub Actions CI/CD</div>
+            <div class="project-desc">Designed and deployed this production-ready DevOps portfolio website with fully automated CI/CD deployment via GitHub Actions. Includes animated UI, resume upload functionality, contact form, and automatic deployment to GitHub Pages on every push.</div>
+            <div class="project-stack">
+              <span>HTML/CSS/JS</span><span>GitHub Actions</span><span>GitHub Pages</span><span>CI/CD</span>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/Kishorgavhane/kishorgavhane" target="_blank"><i class="fab fa-github"></i> Source Code</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Credentials</div>
+          <h2 class="section-title">Certifications & <span>Training</span></h2>
+        </div>
+        <div class="certs-grid">
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fab fa-microsoft"></i></div>
+            <div>
+              <div class="cert-name">Microsoft Azure Administrator</div>
+              <div class="cert-issuer">Microsoft — AZ-104</div>
+              <span class="cert-status">✓ CERTIFIED</span>
+            </div>
+          </div>
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fas fa-code-branch"></i></div>
+            <div>
+              <div class="cert-name">Azure DevOps Engineer</div>
+              <div class="cert-issuer">Microsoft — AZ-400</div>
+              <span class="cert-status" style="color: var(--accent); border-color: rgba(0,200,255,0.2); background: rgba(0,200,255,0.05);">IN TRAINING</span>
+            </div>
+          </div>
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fab fa-aws"></i></div>
+            <div>
+              <div class="cert-name">AWS Solutions Architect</div>
+              <div class="cert-issuer">Amazon Web Services — Training</div>
+              <span class="cert-status" style="color: var(--accent); border-color: rgba(0,200,255,0.2); background: rgba(0,200,255,0.05);">IN TRAINING</span>
+            </div>
+          </div>
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fas fa-network-wired"></i></div>
+            <div>
+              <div class="cert-name">CCNA — Cisco Certified Network Associate</div>
+              <div class="cert-issuer">Cisco — Routing & Switching</div>
+              <span class="cert-status">✓ COMPLETED</span>
+            </div>
+          </div>
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fas fa-laptop-code"></i></div>
+            <div>
+              <div class="cert-name">Diploma in Hardware & Networking</div>
+              <div class="cert-issuer">Kohinoor Technical Institute — CompTIA A+, N+</div>
+              <span class="cert-status">✓ COMPLETED</span>
+            </div>
+          </div>
+          <div class="cert-card reveal">
+            <div class="cert-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+              <div class="cert-name">Bachelor of Computer Applications</div>
+              <div class="cert-issuer">BCA — Computer Science</div>
+              <span class="cert-status">✓ GRADUATED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Documents</div>
+          <h2 class="section-title">My <span>Resume</span></h2>
+        </div>
+        <div class="resume-section">
+          <div class="reveal">
+            <p style="color: var(--text2); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.7;">Upload your resume PDF to display it here, or download the current version directly.</p>
+            <div class="resume-upload-area" id="upload-area">
+              <input type="file" id="resume-file-input" accept=".pdf" />
+              <i class="fas fa-file-upload upload-icon"></i>
+              <div class="upload-title">Upload Resume PDF</div>
+              <div class="upload-sub">Drag & drop or click to browse</div>
+            </div>
+            <div id="resume-preview">
+              <iframe id="resume-iframe" title="Resume Preview"></iframe>
+            </div>
+          </div>
+          <div class="resume-download reveal">
+            <div class="download-card">
+              <div class="download-icon"><i class="fas fa-file-pdf"></i></div>
+              <div class="download-info">
+                <div class="download-name">Kishor Gavhane — Resume</div>
+                <div class="download-meta">Cloud & DevOps Engineer • PDF</div>
+              </div>
+              <a id="download-btn" href="Resume.pdf" download="Kishor_Gavhane_Resume.pdf">
+                <i class="fas fa-download"></i> Download
+              </a>
+            </div>
+            <div style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+              <p style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text3); letter-spacing: 0.1em; margin-bottom: 1.2rem;">// QUICK PROFILE</p>
+              <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+                  <span style="font-size: 0.85rem; color: var(--text3);">Location</span>
+                  <span style="font-size: 0.85rem; color: var(--text);">Pune, Maharashtra 411037</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+                  <span style="font-size: 0.85rem; color: var(--text3);">Experience</span>
+                  <span style="font-size: 0.85rem; color: var(--accent);">7+ Years</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem;">
+                  <span style="font-size: 0.85rem; color: var(--text3);">Specialization</span>
+                  <span style="font-size: 0.85rem; color: var(--text);">Microsoft Azure, DevOps</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-size: 0.85rem; color: var(--text3);">Certification</span>
+                  <span style="font-size: 0.85rem; color: var(--accent2);">AZ-104 Certified</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="max-w">
+        <div class="section-header reveal">
+          <div class="section-tag">Let's Talk</div>
+          <h2 class="section-title">Get In <span>Touch</span></h2>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <h3>Open to Opportunities</h3>
+            <p>I'm actively looking for Cloud & DevOps Engineer roles where I can leverage my Azure expertise and automation skills to drive infrastructure excellence. Whether it's a full-time role or a consulting engagement, let's connect.</p>
+            <div class="contact-items">
+              <a class="contact-item" href="mailto:kishorgavhane.dev@gmail.com">
+                <i class="fas fa-envelope"></i>
+                <div>
+                  <div class="contact-item-text">kishorgavhane.dev@gmail.com</div>
+                  <div class="contact-item-label">// Email</div>
+                </div>
+              </a>
+              <a class="contact-item" href="tel:+919270701808">
+                <i class="fas fa-phone"></i>
+                <div>
+                  <div class="contact-item-text">+91-9270701808</div>
+                  <div class="contact-item-label">// Phone</div>
+                </div>
+              </a>
+              <a class="contact-item" href="https://www.linkedin.com/in/kishor-g-dev" target="_blank">
+                <i class="fab fa-linkedin"></i>
+                <div>
+                  <div class="contact-item-text">linkedin.com/in/kishor-g-dev</div>
+                  <div class="contact-item-label">// LinkedIn</div>
+                </div>
+              </a>
+              <a class="contact-item" href="https://github.com/Kishorgavhane" target="_blank">
+                <i class="fab fa-github"></i>
+                <div>
+                  <div class="contact-item-text">github.com/Kishorgavhane</div>
+                  <div class="contact-item-label">// GitHub</div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="contact-form reveal">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" id="form-name" placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="form-email" placeholder="john@company.com" />
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" id="form-subject" placeholder="Job Opportunity / Collaboration" />
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="form-message" placeholder="Tell me about the role or project..."></textarea>
+            </div>
+            <button class="form-submit" onclick="submitForm()">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+            <div id="form-success">✓ Message sent! I'll get back to you shortly.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">KG<span>.dev</span> — Kishor Gavhane</div>
+    <div class="footer-links">
+      <a href="https://github.com/Kishorgavhane" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/kishor-g-dev" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:kishorgavhane.dev@gmail.com"><i class="fas fa-envelope"></i></a>
+    </div>
+    <div class="footer-copy">© 2025 Kishor Gavhane. Built with GitHub Actions CI/CD.</div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let rx = 0, ry = 0, cx = 0, cy = 0;
+    document.addEventListener('mousemove', e => {
+      cx = e.clientX; cy = e.clientY;
+      cursor.style.left = cx + 'px';
+      cursor.style.top = cy + 'px';
+    });
+    function animateRing() {
+      rx += (cx - rx) * 0.12;
+      ry += (cy - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    document.querySelectorAll('a, button, .skill-card, .project-card, .cert-card').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '50px'; ring.style.height = '50px'; ring.style.borderColor = 'rgba(0,200,255,0.7)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(0,200,255,0.5)'; });
+    });
+
+    // NAV SCROLL
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // MOBILE MENU
+    function openMobileMenu() { document.getElementById('mobile-menu').classList.add('open'); }
+    function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+    // REVEAL ON SCROLL
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // CANVAS BACKGROUND
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], nodes = [], tick = 0;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Particles
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * 2000,
+        y: Math.random() * 1000,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.5 + 0.1,
+        color: Math.random() > 0.5 ? '0,200,255' : '0,255,157'
+      });
+    }
+
+    // Pipeline nodes
+    for (let i = 0; i < 8; i++) {
+      nodes.push({
+        x: (i + 0.5) * (2000 / 8),
+        y: 300 + Math.sin(i * 0.8) * 150,
+        r: 4 + Math.random() * 4,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    function drawFrame() {
+      ctx.clearRect(0, 0, W, H);
+      tick++;
+
+      // Draw pipeline connections
+      ctx.strokeStyle = 'rgba(0,200,255,0.06)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[i+1].x, nodes[i+1].y);
+        ctx.stroke();
+      }
+
+      // Draw nodes
+      nodes.forEach((n, i) => {
+        const pulse = Math.sin(tick * 0.02 + n.phase) * 0.5 + 0.5;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,200,255,${0.1 + pulse * 0.15})`;
+        ctx.fill();
+        ctx.strokeStyle = `rgba(0,200,255,${0.3 + pulse * 0.3})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Animated data packet
+        if (i < nodes.length - 1) {
+          const t = ((tick * 0.5 + i * 30) % 100) / 100;
+          const px = nodes[i].x + (nodes[i+1].x - nodes[i].x) * t;
+          const py = nodes[i].y + (nodes[i+1].y - nodes[i].y) * t;
+          ctx.beginPath();
+          ctx.arc(px, py, 3, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0,255,157,0.7)`;
+          ctx.fill();
+        }
+      });
+
+      // Particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.color},${p.opacity})`;
+        ctx.fill();
+      });
+
+      // Connect nearby particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx*dx+dy*dy);
+          if (d < 120) {
+            ctx.strokeStyle = `rgba(0,200,255,${0.06 * (1 - d/120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(drawFrame);
+    }
+    drawFrame();
+
+    // RESUME UPLOAD
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('resume-file-input');
+    const preview = document.getElementById('resume-preview');
+    const iframe = document.getElementById('resume-iframe');
+
+    fileInput.addEventListener('change', handleFile);
+
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') showResume(file);
+    });
+
+    function handleFile(e) {
+      const file = e.target.files[0];
+      if (file) showResume(file);
+    }
+
+    function showResume(file) {
+      const url = URL.createObjectURL(file);
+      iframe.src = url;
+      preview.style.display = 'block';
+      uploadArea.querySelector('.upload-title').textContent = file.name;
+      uploadArea.querySelector('.upload-sub').textContent = `${(file.size/1024).toFixed(1)} KB — Click to replace`;
+      document.getElementById('download-btn').href = url;
+      document.getElementById('download-btn').download = file.name;
+    }
+
+    // CONTACT FORM
+    function submitForm() {
+      const name = document.getElementById('form-name').value;
+      const email = document.getElementById('form-email').value;
+      const subject = document.getElementById('form-subject').value;
+      const message = document.getElementById('form-message').value;
+      if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
+      const mailto = `mailto:kishorgavhane.dev@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Contact')}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+      window.location.href = mailto;
+      document.getElementById('form-success').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

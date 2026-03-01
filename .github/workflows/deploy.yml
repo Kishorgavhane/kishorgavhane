@@ -1,0 +1,80 @@
+name: 🚀 Deploy Portfolio to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1: Validate & Build
+  # ─────────────────────────────────────────────
+  build:
+    name: 🔍 Validate & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔎 Validate HTML Structure
+        run: |
+          echo "✅ Checking index.html exists..."
+          test -f index.html && echo "✅ index.html found!" || exit 1
+          echo "✅ Checking file size..."
+          size=$(wc -c < index.html)
+          echo "   File size: ${size} bytes"
+          if [ "$size" -lt 1000 ]; then
+            echo "❌ index.html seems too small!"
+            exit 1
+          fi
+          echo "✅ HTML validation passed."
+
+      - name: 📋 List Deployment Files
+        run: |
+          echo "📁 Files to be deployed:"
+          ls -lah
+          echo ""
+          echo "📊 Repository summary:"
+          echo "   Total files: $(find . -not -path './.git/*' -type f | wc -l)"
+
+      - name: ⚙️ Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: 📦 Upload Artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Deploy to GitHub Pages
+  # ─────────────────────────────────────────────
+  deploy:
+    name: 🌐 Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: ✅ Deployment Success
+        run: |
+          echo "🎉 Portfolio deployed successfully!"
+          echo "🌐 Live URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "📅 Deployed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
