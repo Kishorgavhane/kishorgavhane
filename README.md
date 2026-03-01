@@ -88,14 +88,6 @@ python3 -m http.server 8000
 open http://localhost:8000
 ```
 
----
-
-## ⚙️ Deploy Your Own
-
-1. **Fork** this repository
-2. Go to **Settings → Pages**
-3. Set Source to **GitHub Actions**
-4. Push any change to `main` — the workflow handles the rest!
 
 ---
 
