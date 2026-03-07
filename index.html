@@ -63,6 +63,8 @@ img{max-width:100%;display:block}
 
 /* ── NAV ── */
 #nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;padding:0 24px;transition:background .3s,border .3s}
+html{scroll-padding-top:68px}
+section{scroll-margin-top:68px}
 #nav.sc{background:rgba(13,11,30,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--pb)}
 .ni{width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center}
 .logo{display:flex;align-items:center;gap:10px}
@@ -297,6 +299,8 @@ img{max-width:100%;display:block}
 /* ── REVEAL ── */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
 .rv.vis{opacity:1;transform:translateY(0)}
+/* Fallback: if JS disabled, show everything */
+@media (prefers-reduced-motion: reduce) { .rv{opacity:1;transform:none} }
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
@@ -547,7 +551,7 @@ img{max-width:100%;display:block}
       <div>
         <div class="ce-col-title">🏆 <span>Certifications</span></div>
         <div class="cert-list">
-          <div class="cert-row rv">
+          <div class="cert-row">
             <div class="cert-logo" style="background:rgba(0,120,212,0.15);color:#50A0E8;border:1px solid rgba(0,120,212,0.3)">Az</div>
             <div class="cert-info">
               <div class="cert-name">Azure Administrator — AZ-104</div>
@@ -555,7 +559,7 @@ img{max-width:100%;display:block}
             </div>
             <span class="cert-badge" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22C55E">✓ Active</span>
           </div>
-          <div class="cert-row rv">
+          <div class="cert-row">
             <div class="cert-logo" style="background:rgba(0,120,212,0.15);color:#50A0E8;border:1px solid rgba(0,120,212,0.3)">Az</div>
             <div class="cert-info">
               <div class="cert-name">Azure DevOps Engineer — AZ-400</div>
@@ -563,7 +567,7 @@ img{max-width:100%;display:block}
             </div>
             <span class="cert-badge" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#F97316">⏳ Progress</span>
           </div>
-          <div class="cert-row rv">
+          <div class="cert-row">
             <div class="cert-logo" style="background:rgba(255,153,0,0.12);color:#FF9900;border:1px solid rgba(255,153,0,0.3)">AWS</div>
             <div class="cert-info">
               <div class="cert-name">AWS Solutions Architect — SAA-C03</div>
@@ -571,7 +575,7 @@ img{max-width:100%;display:block}
             </div>
             <span class="cert-badge" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);color:#06B6D4">📖 Study</span>
           </div>
-          <div class="cert-row rv">
+          <div class="cert-row">
             <div class="cert-logo" style="background:rgba(0,150,200,0.12);color:#00A0CC;border:1px solid rgba(0,150,200,0.3)">CCNA</div>
             <div class="cert-info">
               <div class="cert-name">Cisco CCNA — 200-301</div>
@@ -579,7 +583,7 @@ img{max-width:100%;display:block}
             </div>
             <span class="cert-badge" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22C55E">✓ Active</span>
           </div>
-          <div class="cert-row rv">
+          <div class="cert-row">
             <div class="cert-logo" style="background:rgba(34,197,94,0.1);color:#22C55E;border:1px solid rgba(34,197,94,0.3)">HW</div>
             <div class="cert-info">
               <div class="cert-name">Hardware &amp; Networking Diploma</div>
@@ -593,7 +597,7 @@ img{max-width:100%;display:block}
       <div>
         <div class="ce-col-title">🎓 <span>Education</span></div>
         <div class="edu-list">
-          <div class="edu-row rv">
+          <div class="edu-row">
             <div class="edu-icon">🎓</div>
             <div class="edu-degree">Bachelor of Computer Applications (BCA)</div>
             <div class="edu-inst">University · Computer Science &amp; Applications</div>
@@ -602,7 +606,7 @@ img{max-width:100%;display:block}
               <span class="etag">Networking</span><span class="etag">OS Concepts</span><span class="etag">Programming</span><span class="etag">Databases</span>
             </div>
           </div>
-          <div class="edu-row rv">
+          <div class="edu-row">
             <div class="edu-icon">🔧</div>
             <div class="edu-degree">Hardware &amp; Networking Diploma</div>
             <div class="edu-inst">Kohinoor Technical Institute · Pune</div>
@@ -611,7 +615,7 @@ img{max-width:100%;display:block}
               <span class="etag">Hardware</span><span class="etag">LAN/WAN</span><span class="etag">Troubleshoot</span>
             </div>
           </div>
-          <div class="edu-row rv">
+          <div class="edu-row">
             <div class="edu-icon">☁️</div>
             <div class="edu-degree">Microsoft Azure Administrator (AZ-104)</div>
             <div class="edu-inst">Microsoft Learn · Official Certification Track</div>
@@ -620,7 +624,7 @@ img{max-width:100%;display:block}
               <span class="etag">Azure VMs</span><span class="etag">VNet</span><span class="etag">RBAC</span><span class="etag">Azure AD</span>
             </div>
           </div>
-          <div class="edu-row rv">
+          <div class="edu-row">
             <div class="edu-icon">🐳</div>
             <div class="edu-degree">DevOps &amp; Cloud Engineering</div>
             <div class="edu-inst">Self-Taught · Udemy · Linux Foundation · AWS</div>
@@ -638,13 +642,13 @@ img{max-width:100%;display:block}
 <!-- ══ DEVOPS LAB ══ -->
 <section class="sec" style="background:var(--bg)">
   <div class="wrap">
-    <div class="shdr shdr-c rv">
+    <div class="shdr shdr-c">
       <span class="stag">// Lab Environment</span>
       <h2 class="stitle">DevOps <span>Lab</span></h2>
       <p class="ssub">Hands-on infrastructure built and maintained in personal lab — real setups, not just theory</p>
     </div>
     <div class="lab-grid">
-      <div class="lab-card rv" style="--lc:#7C3AED;--lb:rgba(124,58,237,0.12)">
+      <div class="lab-card" style="--lc:#7C3AED;--lb:rgba(124,58,237,0.12)">
         <div class="lab-ico">🏠</div>
         <div class="lab-tag">Home Lab Infrastructure</div>
         <h3 class="lab-title">On-Prem Kubernetes Cluster</h3>
@@ -652,7 +656,7 @@ img{max-width:100%;display:block}
         <div class="lab-stack"><span>Kubernetes</span><span>pfSense</span><span>Proxmox</span><span>MetalLB</span></div>
         <div class="lab-status"><span class="lab-dot"></span>Running 24/7</div>
       </div>
-      <div class="lab-card rv" style="--lc:#22C55E;--lb:rgba(34,197,94,0.08)">
+      <div class="lab-card" style="--lc:#22C55E;--lb:rgba(34,197,94,0.08)">
         <div class="lab-ico">⚙️</div>
         <div class="lab-tag">CI/CD Architecture</div>
         <h3 class="lab-title">GitOps Pipeline Stack</h3>
@@ -660,7 +664,7 @@ img{max-width:100%;display:block}
         <div class="lab-stack"><span>GitHub Actions</span><span>ArgoCD</span><span>Docker</span><span>Helm</span></div>
         <div class="lab-status"><span class="lab-dot" style="background:#22C55E;box-shadow:0 0 6px #22C55E"></span>Active Pipelines</div>
       </div>
-      <div class="lab-card rv" style="--lc:#F97316;--lb:rgba(249,115,22,0.08)">
+      <div class="lab-card" style="--lc:#F97316;--lb:rgba(249,115,22,0.08)">
         <div class="lab-ico">📊</div>
         <div class="lab-tag">Monitoring Stack</div>
         <h3 class="lab-title">Full Observability Setup</h3>
@@ -668,7 +672,7 @@ img{max-width:100%;display:block}
         <div class="lab-stack"><span>Prometheus</span><span>Grafana</span><span>AlertManager</span><span>Loki</span></div>
         <div class="lab-status"><span class="lab-dot" style="background:#F97316;box-shadow:0 0 6px #F97316"></span>Monitoring Active</div>
       </div>
-      <div class="lab-card rv" style="--lc:#06B6D4;--lb:rgba(6,182,212,0.08)">
+      <div class="lab-card" style="--lc:#06B6D4;--lb:rgba(6,182,212,0.08)">
         <div class="lab-ico">🏗️</div>
         <div class="lab-tag">Infrastructure as Code</div>
         <h3 class="lab-title">Terraform + Ansible Automation</h3>
@@ -685,12 +689,12 @@ img{max-width:100%;display:block}
 <!-- ══ GITHUB ACTIVITY ══ -->
 <section class="sec" style="background:var(--bg)">
   <div class="wrap">
-    <div class="shdr shdr-c rv">
+    <div class="shdr shdr-c">
       <span class="stag">// Open Source</span>
       <h2 class="stitle">GitHub <span>Activity</span></h2>
       <p class="ssub">Consistent contributions across DevOps tools, automation scripts, and infrastructure projects</p>
     </div>
-    <div class="gh-stats rv">
+    <div class="gh-stats">
       <div class="gh-stat-card">
         <img src="https://github-readme-stats.vercel.app/api?username=Kishorgavhane&show_icons=true&theme=transparent&hide_border=true&title_color=9B5DE5&icon_color=7C3AED&text_color=A78BFA&bg_color=00000000&include_all_commits=true&count_private=false"
              alt="GitHub Stats" loading="lazy" style="width:100%;height:auto;border-radius:10px"/>
@@ -856,22 +860,41 @@ if (canvas) {
 }
 
 // ── SKILL BARS on scroll
-const barObs = new IntersectionObserver(entries => entries.forEach(e => {
-  if (e.isIntersecting) {
-    e.target.querySelectorAll('.ebf').forEach(b => b.style.width = b.dataset.w + '%');
-    barObs.unobserve(e.target);
-  }
-}), {threshold:.3});
+// Skill bars - animate when visible, with fallback
+function animateBars() {
+  document.querySelectorAll('.ebf').forEach(b => {
+    b.style.width = b.dataset.w + '%';
+  });
+}
 const ebars = document.getElementById('ebars');
-if (ebars) barObs.observe(ebars);
+if (ebars) {
+  const barObs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { animateBars(); barObs.disconnect(); }
+  }), {threshold: 0.1, rootMargin:'0px 0px 0px 0px'});
+  barObs.observe(ebars);
+  // Fallback: if already in viewport on load, animate immediately
+  setTimeout(() => {
+    const rect = ebars.getBoundingClientRect();
+    if (rect.top < window.innerHeight) animateBars();
+  }, 500);
+}
 
 // ── SCROLL REVEAL
-const rvObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
-}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+// Scroll reveal with fallback - all elements visible if JS/observer fails
 document.querySelectorAll('.rv').forEach((el, i) => {
   el.style.transitionDelay = (i % 4) * 0.08 + 's';
-  rvObs.observe(el);
+});
+const rvObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); rvObs.unobserve(e.target); } });
+}, {threshold:0.05, rootMargin:'0px 0px 0px 0px'});
+document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+// Fallback: show all rv after 1.5s if observer doesn't fire
+setTimeout(() => {
+  document.querySelectorAll('.rv:not(.vis)').forEach(el => el.classList.add('vis'));
+}, 1500);
+// Extra fallback for skill bars after page fully loaded
+window.addEventListener('load', () => {
+  setTimeout(animateBars, 800);
 });
 
 // ── CURSOR GLOW (desktop)
