@@ -1,144 +1,8 @@
-# ═══════════════════════════════════════════════════════════
-#   Kishor Gavhane — Portfolio CI/CD Pipeline
-#   GitHub Actions → Auto Deploy to GitHub Pages
-#   Trigger: Every push to main branch
-# ═══════════════════════════════════════════════════════════
-
 name: 🚀 Deploy Portfolio to GitHub Pages
 
 on:
   push:
-    branches:
-      - main          # main branch pe push hone par auto deploy
-  pull_request:
-    branches:
-      - main          # PR pe sirf build check (deploy nahi)
-  workflow_dispatch:  # Manual trigger bhi kar sakte ho
-
-# GitHub Pages deploy ke liye permissions
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Ek time pe sirf ek deployment — purani cancel kar do
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-jobs:
-  # ─────────────────────────────────────────
-  # JOB 1: Validate / Lint HTML
-  # ─────────────────────────────────────────
-  validate:
-    name: ✅ Validate HTML
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
-
-      - name: 🔍 Check index.html exists
-        run: |
-          echo "=== Files in repo ==="
-          ls -la
-          if [ ! -f "index.html" ]; then
-            echo "❌ ERROR: index.html not found!"
-            exit 1
-          fi
-          echo "✅ index.html found — Size: $(wc -c < index.html) bytes"
-
-      - name: 📊 Show file sizes
-        run: |
-          echo "=== Portfolio File Summary ==="
-          echo "index.html    : $(wc -l < index.html) lines"
-          echo "Total size    : $(du -sh . | cut -f1)"
-
-  # ─────────────────────────────────────────
-  # JOB 2: Build (future ke liye ready)
-  # ─────────────────────────────────────────
-  build:
-    name: 🔨 Build Portfolio
-    runs-on: ubuntu-latest
-    needs: validate          # validate ke baad chalega
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
-
-      - name: 📁 Prepare deploy folder
-        run: |
-          mkdir -p _site
-          # index.html copy karo
-          cp index.html _site/
-          # Agar 404.html hai toh woh bhi copy karo
-          [ -f "404.html" ]   && cp 404.html _site/   || echo "No 404.html"
-          # CSS folder agar hai
-          [ -d "css" ]        && cp -r css _site/      || echo "No css/"
-          # JS folder agar hai
-          [ -d "js" ]         && cp -r js _site/       || echo "No js/"
-          # Images/assets folder agar hai
-          [ -d "assets" ]     && cp -r assets _site/   || echo "No assets/"
-          [ -d "images" ]     && cp -r images _site/   || echo "No images/"
-          # Resume PDF agar hai
-          [ -d "resume" ]     && cp -r resume _site/   || echo "No resume/"
-          echo "=== _site folder contents ==="
-          ls -la _site/
-
-      - name: ⚙️ Setup GitHub Pages
-        uses: actions/configure-pages@v4
-
-      - name: 📤 Upload artifact to Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site        # yeh folder deploy hoga
-
-  # ─────────────────────────────────────────
-  # JOB 3: Deploy to GitHub Pages
-  # ─────────────────────────────────────────
-  deploy:
-    name: 🌐 Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    needs: build             # build ke baad chalega
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: 🚀 Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: ✅ Deployment Success
-        run: |
-          echo "============================================"
-          echo "  🎉 Portfolio Successfully Deployed!"
-          echo "  🌐 URL: ${{ steps.deployment.outputs.page_url }}"
-          echo "  📅 Time: $(date)"
-          echo "  🔀 Commit: ${{ github.sha }}"
-          echo "============================================"
-
-  # ─────────────────────────────────────────
-  # JOB 4: Post-Deploy Notification (optional)
-  # ─────────────────────────────────────────
-  notify:
-    name: 📢 Notify Deploy Status
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: always()
-    steps:
-      - name: 📊 Deploy Summary
-        run: |
-          if [ "${{ needs.deploy.result }}" == "success" ]; then
-            echo "✅ DEPLOY SUCCESS"
-            echo "Portfolio is LIVE at GitHub Pages!"
-          else
-            echo "❌ DEPLOY FAILED"
-            echo "Check the logs above for errors."
-          finame: 🚀 Deploy Portfolio to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -148,32 +12,64 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
-    name: 🔍 Build
+
+  validate:
+    name: ✅ Validate HTML
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout Repository
+      - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: ⚙️ Configure GitHub Pages
+      - name: 🔍 Check index.html exists
+        run: |
+          if [ ! -f "index.html" ]; then
+            echo "❌ ERROR: index.html not found!"
+            exit 1
+          fi
+          echo "✅ index.html found — $(wc -l < index.html) lines"
+
+  build:
+    name: 🔨 Build Portfolio
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📁 Prepare deploy folder
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          [ -f "404.html" ]  && cp 404.html _site/  || true
+          [ -d "css" ]       && cp -r css _site/     || true
+          [ -d "js" ]        && cp -r js _site/      || true
+          [ -d "assets" ]    && cp -r assets _site/  || true
+          [ -d "resume" ]    && cp -r resume _site/  || true
+          echo "=== _site contents ===" && ls -la _site/
+
+      - name: ⚙️ Setup GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: 📦 Upload Artifact
+      - name: 📤 Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: _site
 
   deploy:
-    name: 🌐 Deploy
+    name: 🌐 Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: ✅ Print Live URL
+        run: |
+          echo "🎉 Portfolio LIVE at: ${{ steps.deployment.outputs.page_url }}"
