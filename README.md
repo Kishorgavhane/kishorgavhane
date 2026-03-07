@@ -191,29 +191,6 @@ Full observability with Prometheus, custom dashboards, AlertManager and PagerDut
 
 ---
 
-## 🚀 Deploy This Portfolio
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/Kishorgavhane/kishorgavhane.git
-cd kishorgavhane
-
-# 2. Make changes to index.html
-
-# 3. Push to main — CI/CD auto-deploys!
-git add .
-git commit -m "Update portfolio"
-git push origin main
-
-# GitHub Actions automatically:
-# ✅ Validates HTML
-# ✅ Builds _site folder
-# ✅ Deploys to GitHub Pages
-# 🌐 Live in ~60 seconds!
-```
-
----
-
 <div align="center">
 
 **📍 Pune, India · Open to DevOps / Cloud / SRE Roles**
