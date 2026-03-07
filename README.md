@@ -135,19 +135,6 @@ Full observability with Prometheus, custom dashboards, AlertManager and PagerDut
 
 ---
 
-## 📈 GitHub Stats
-
-<div align="center">
-
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=Kishorgavhane&show_icons=true&theme=tokyonight&hide_border=true&title_color=9B5DE5&icon_color=7C3AED&text_color=A78BFA&bg_color=0D0B1E)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Kishorgavhane&layout=compact&theme=tokyonight&hide_border=true&title_color=9B5DE5&text_color=A78BFA&bg_color=0D0B1E&langs_count=6)
-
-![Contribution Graph](https://ghchart.rshah.org/7C3AED/Kishorgavhane)
-
-</div>
-
----
 
 ## 🎓 Education
 
