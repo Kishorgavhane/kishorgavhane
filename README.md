@@ -17,7 +17,7 @@
 
 <br/>
 
-[![Portfolio Live](https://img.shields.io/badge/🌐%20View%20Portfolio-kishorgavhane.github.io-7C3AED?style=for-the-badge)](https://kishorgavhane.github.io/kishorgavhane/)
+[![Portfolio Live](https://img.shields.io/badge/🌐%20View%20Portfolio-kishorgavhane.com-7C3AED?style=for-the-badge)](https://kishorgavhane.com/)
 
 </div>
 
