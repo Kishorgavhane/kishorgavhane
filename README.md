@@ -39,6 +39,7 @@ $ cat profile.json
   "email"       : "kishorgavhane.dev@gmail.com",
   "phone"       : "+91-9270701808"
 }
+
 ```
 
 I specialize in **Cloud Infrastructure**, **Kubernetes**, and **CI/CD automation** — turning complex infrastructure challenges into elegant, automated, highly available solutions. From Samsung support engineering to Azure production management, I've spent 7+ years building and managing real-world infrastructure.
