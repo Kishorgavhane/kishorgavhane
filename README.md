@@ -25,11 +25,13 @@
 
 ## 👨‍💻 About Me
 
-```bash
+
 $ whoami
+
 > Kishor Gavhane — DevOps & Cloud Engineer
 
-$ cat profile.json
+```bash
+
 {
   "role"        : "DevOps / Cloud Engineer",
   "experience"  : "7+ years",
